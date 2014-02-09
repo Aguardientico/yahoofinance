@@ -43,17 +43,21 @@ type quoteInfo struct {
 type Quote struct {
 	Close float64
 	Date  time.Time
+	Avg   float64
+	Top   float64
+	Bottom float64
 }
 
-// Set the correct data types to allow to work with quotes
+// Set the correct data types to allow to work with quotes and reverse order
 func normalize(quotesOriginal []quoteInfo) (quotes []Quote) {
-	quotes = make([]Quote, len(quotesOriginal))
+        var length = len(quotesOriginal)
+	quotes = make([]Quote, length)
 	for i, q := range quotesOriginal {
 		close, err := strconv.ParseFloat(q.Close, 64)
 		perror(err)
 		date, err := time.Parse("2006-01-02", q.Date)
 		perror(err)
-		quotes[i] = Quote{Close: close, Date: date}
+		quotes[length - i - 1] = Quote{Close: close, Date: date}
 	}
 	return
 }
